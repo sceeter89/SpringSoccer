@@ -53,6 +53,10 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Dragable.cs" />
      <Compile Include="Assets\Scripts\PawnController.cs" />
+     <None Include="Assets\Demigiant\DOTween\readme.txt" />
+     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />
+     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
+     <None Include="Assets\Demigiant\DOTween\DOTween50.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>H:/Program Files/Unity2017.1.0f3/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -73,6 +77,18 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>H:/Program Files/Unity2017.1.0f3/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween">
+ <HintPath>H:/Dev/Unity3D/SpringSoccer/SpringSoccer/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween43">
+ <HintPath>H:/Dev/Unity3D/SpringSoccer/SpringSoccer/Assets/Demigiant/DOTween/DOTween43.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween46">
+ <HintPath>H:/Dev/Unity3D/SpringSoccer/SpringSoccer/Assets/Demigiant/DOTween/DOTween46.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween50">
+ <HintPath>H:/Dev/Unity3D/SpringSoccer/SpringSoccer/Assets/Demigiant/DOTween/DOTween50.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
