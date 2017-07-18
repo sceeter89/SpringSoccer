@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: 36ae226ef91c1d84a8ac62ca87cf10c5
-timeCreated: 1500146941
-licenseType: Free
+guid: fbb7c72ef0dc47b448e047cae62f83bd
+timeCreated: 1500397370
+licenseType: Pro
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Sphere
+    4300000: Cube
     7400000: Default Take
     9500000: //RootNode
   materials:

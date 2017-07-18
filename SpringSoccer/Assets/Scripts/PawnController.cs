@@ -1,61 +1,90 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PawnController : MonoBehaviour
+public class PawnController : MonoBehaviour, IPointerClickHandler
 {
-	private Rigidbody _rigidBody;
-	private bool _slowingDown;
-	private Vector3 _initialPosition;
-	private Quaternion _initialRotation;
-	private int _updatesBelowAverage = 0;
+    private bool _isMousePressed;
 
-	public GameObject forceApplicationPoint;
-	public Vector3 currentSpeed;
-	public float currentLength;
-	public float force = 100f;
+    public float PawnRotationSpeed = 10;
+    public bool IsPawnActive = false;
+    public GameObject PawnCamera;
+    public GameObject Pawn;
 
-	void Start ()
-	{
-		_rigidBody = GetComponent<Rigidbody> ();
-		_initialPosition = transform.position;
-		_initialRotation = transform.rotation;
-	}
+    private void Start ()
+    {
+    }
 
-	void Update()
-	{
-		currentSpeed = _rigidBody.velocity;
-		currentLength = currentSpeed.magnitude;
-		if (_slowingDown) {
-			_rigidBody.AddForceAtPosition(currentSpeed * -0.7f, forceApplicationPoint.transform.position, ForceMode.Acceleration);
+    private void Update()
+    {
+        if (IsPawnActive == false)
+            return;
 
-			if (currentLength < 0.3f && _updatesBelowAverage > 20) {
-				transform.position = _initialPosition;
-				transform.rotation = _initialRotation;
-				_rigidBody.velocity = Vector3.zero;
-				_rigidBody.angularVelocity = Vector3.zero;
-				_slowingDown = false;
-			} else if (currentLength < 0.3f) {
-				_updatesBelowAverage++;
-			}
-			else {
-				_updatesBelowAverage = 0;
-			}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            DeselectPawn();
+            SetMainCameraActive(true);
+            return;
+        }
 
-		}
+        if (Input.GetMouseButtonDown(1))
+        {
+            _isMousePressed = true;
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            _isMousePressed = false;
+        }
+        if (_isMousePressed)
+        {
+            gameObject.transform.RotateAround(transform.position, Vector3.up,
+                Input.GetAxis("Mouse X") * PawnRotationSpeed);
+            var joint = Pawn.GetComponent<HingeJoint>();
+            var rotationQuaternion = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * PawnRotationSpeed, Vector3.up);
+            joint.axis = rotationQuaternion * joint.axis;
+            joint.connectedAnchor = rotationQuaternion * joint.connectedAnchor;
+        }
+    }
 
-	}
+    public void SelectPawn()
+    {
+        PawnCamera.SetActive(true);
+        IsPawnActive = true;
+        
+        GameObject.Find("Corp").GetComponent<PawnCorpController>().enabled = true;
+    }
 
-	void OnMouseDown ()
-	{
-		//_rigidBody.transform.RotateAround (rotationPivot.transform.position, Vector3.right, 45);
-		var mouseClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		var direction = gameObject.transform.position - mouseClickPosition;
-		_rigidBody.AddForceAtPosition(direction.normalized * force, forceApplicationPoint.transform.position, ForceMode.Acceleration);
+    public void DeselectPawn()
+    {
+        PawnCamera.SetActive(false);
+        IsPawnActive = false;
 
-		DOVirtual.DelayedCall (2, () => _slowingDown = true);
-		//_rigidBody.AddForce(Vector3.left * force, ForceMode.Acceleration);
-		//_rigidBody.useGravity = true;
-	}
+        GameObject.Find("Corp").GetComponent<PawnCorpController>().enabled = false;
+    }
+
+    private void SetMainCameraActive(bool isActive)
+    {
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().enabled = isActive;
+    }
+
+    private bool GetMainCameraActive()
+    {
+        return GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().enabled;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (GetMainCameraActive() == false)
+            return;
+
+        SetMainCameraActive(false);
+        var pawns = GameObject.FindGameObjectsWithTag("PawnTag");
+
+        foreach (var pawn in pawns)
+        {
+            var controller = pawn.GetComponent<PawnController>();
+            controller.DeselectPawn();
+        }
+
+        SelectPawn();
+    }
 }
