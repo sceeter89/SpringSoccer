@@ -38,10 +38,11 @@ public class PawnController : MonoBehaviour, IPointerClickHandler
         {
             gameObject.transform.RotateAround(transform.position, Vector3.up,
                 Input.GetAxis("Mouse X") * PawnRotationSpeed);
-            var joint = Pawn.GetComponent<HingeJoint>();
+            /*var joint = Pawn.GetComponent<HingeJoint>();
             var rotationQuaternion = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * PawnRotationSpeed, Vector3.up);
             joint.axis = rotationQuaternion * joint.axis;
-            joint.connectedAnchor = rotationQuaternion * joint.connectedAnchor;
+            joint.anchor = rotationQuaternion * joint.anchor;
+            joint.connectedAnchor = rotationQuaternion * joint.connectedAnchor;*/
         }
     }
 
